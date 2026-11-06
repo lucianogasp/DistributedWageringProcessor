@@ -36,12 +36,6 @@ class Money {
     );
   }
 
-  private assertSameCurrency(other: Money): void {
-    if (this.currency !== other.currency) {
-      throw new Error("Currency mismatch");
-    }
-  }
-
   public add(other: Money): Money {
     this.assertSameCurrency(other);
 
@@ -88,6 +82,12 @@ class Money {
   }
   public isZero(): boolean {
     return this.amount.isZero();
+  }
+
+  private assertSameCurrency(other: Money): void {
+    if (this.currency !== other.currency) {
+      throw new Error("Currency mismatch");
+    }
   }
 }
 

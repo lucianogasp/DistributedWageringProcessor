@@ -1,4 +1,5 @@
 import Money from "../money/Money";
+import { LedgerDirection } from "../walletLedgerEntry/WalletLedgerEntry";
 
 enum WagerTransactionKind {
   Opening = "OPENING",
@@ -25,11 +26,6 @@ enum FailureCode {
   InvalidAmount = "INVALID_AMOUNT",
 }
 
-enum LedgerDirection { 
-  Debit = "DEBIT", 
-  Credit = "CREDIT" 
-}
-
 interface CreateWagerTransactionProps {
   id: string;
   providerId: string;
@@ -45,7 +41,7 @@ interface CreateWagerTransactionProps {
   referenceExternalTransactionId?: string;
 }
 
-export interface WagerTransactionState {
+interface WagerTransactionState {
   id: string;
   providerId: string;
   externalTransactionId: string;
@@ -79,7 +75,6 @@ class WagerTransaction {
     public readonly gameId: string,
     public readonly kind: WagerTransactionKind,
     public readonly money: Money,
-    /** id no provedor — não o id interno */
     public readonly referenceExternalTransactionId: string | undefined,
     public readonly createdAt: Date,
     private _status: WagerTransactionStatus,
