@@ -1,36 +1,49 @@
 import { Decimal } from 'decimal.js';
 
+interface MoneyProps {
+  value: string,
+  currency: string
+}
+
 class Money {
   private constructor(
     private readonly amount: Decimal,
-    private readonly currency: string
+    public readonly currency: string
   ) {}
 
-  static from(
-    value: string,
-    currency: string
-  ): Money {
-    if (!/^-?\d+\.\d{2}$/.test(value)) {
+  static from(props: MoneyProps): Money {
+    if (!/^-?\d+\.\d{2}$/.test(props.value)) {
       throw new Error("Invalid monetary format");
     }
+    if (!/^[A-Z]{3}$/.test(props.currency)) {
+      throw new Error("Invalid currency");
+    }
+
+    return new Money(
+      new Decimal(props.value),
+      props.currency
+    );
+  }
+
+  static zero(currency: MoneyProps['currency']): Money {
     if (!/^[A-Z]{3}$/.test(currency)) {
       throw new Error("Invalid currency");
     }
 
     return new Money(
-      new Decimal(value),
+      new Decimal(0),
       currency
     );
   }
 
-  private ensureSameCurrency(other: Money): void {
+  private assertSameCurrency(other: Money): void {
     if (this.currency !== other.currency) {
       throw new Error("Currency mismatch");
     }
   }
 
   public add(other: Money): Money {
-    this.ensureSameCurrency(other);
+    this.assertSameCurrency(other);
 
     return new Money(
       this.amount.plus(other.amount),
@@ -38,7 +51,7 @@ class Money {
     );
   }
   public subtract(other: Money): Money {
-    this.ensureSameCurrency(other);
+    this.assertSameCurrency(other);
 
     return new Money(
       this.amount.minus(other.amount),
@@ -52,12 +65,12 @@ class Money {
     );
   }
   public isGreaterThan(other: Money): boolean {
-    this.ensureSameCurrency(other);
+    this.assertSameCurrency(other);
 
     return this.amount.greaterThan(other.amount);
   }
   public isLessThan(other: Money): boolean {
-    this.ensureSameCurrency(other);
+    this.assertSameCurrency(other);
     
     return this.amount.lessThan(other.amount);
   }
