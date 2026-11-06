@@ -1,4 +1,4 @@
-import Money from "../money/Money";
+import Money from "../../shared/domain/Money";
 
 type WalletProps = {
   id: string,

@@ -1,5 +1,5 @@
-import Money from "../money/Money";
-import { LedgerDirection } from "../walletLedgerEntry/WalletLedgerEntry";
+import Money from "../../shared/domain/Money";
+import { LedgerDirection } from "../../wallet/domain/WalletLedgerEntry";
 
 enum WagerTransactionKind {
   Opening = "OPENING",

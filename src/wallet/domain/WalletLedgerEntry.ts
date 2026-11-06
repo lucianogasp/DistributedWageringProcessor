@@ -1,4 +1,4 @@
-import Money from "../money/Money";
+import Money from "../../shared/domain/Money";
 
 export enum LedgerDirection { 
   Debit = "DEBIT", 
@@ -122,7 +122,6 @@ class WalletLedgerEntry {
       throw new Error("Currency mismatch in ledger entry");
     }
   }
-
 }
 
 export default WalletLedgerEntry;
