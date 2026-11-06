@@ -62,6 +62,11 @@ class WalletLedgerEntry {
   }
 
   static rehydrate(state: LedgerEntryState): WalletLedgerEntry {
+
+    if (Number.isNaN(state.createdAt.getTime())) {
+      throw new Error("Invalid ledger entry creation date");
+    }
+
     return new WalletLedgerEntry(
       state.id,
       state.walletId,
