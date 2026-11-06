@@ -1,5 +1,6 @@
 import Money from "../../shared/domain/Money";
 import { LedgerDirection } from "../../wallet/domain/WalletLedgerEntry";
+import { InvalidTransactionStateError } from '../../shared/domain/errors/InvalidTransactionStateError';
 
 export enum WagerTransactionKind {
   Opening = "OPENING",
@@ -270,8 +271,7 @@ class WagerTransaction {
       this._status === WagerTransactionStatus.Failed
     ) {
       
-      throw new Error('Error temporário');
-      // throw new InvalidTransactionStateError();
+      throw new InvalidTransactionStateError(this._status);
     }
   }
   // ==================================================================================================================================================================

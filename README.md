@@ -1,114 +1,84 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Processador Distribuído de Transações de Apostas
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Projeto desenvolvido como parte do desafio técnico da Jungle Gaming.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A proposta do sistema é construir um processador distribuído de transações financeiras de apostas, recebidas de múltiplos provedores de jogos, com foco em precisão financeira, modelagem de domínio, idempotência, concorrência e consistência entre os saldos das carteiras e seus respectivos registros financeiros (ledger).
 
-## Description
+## Estado atual da implementação
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Esta submissão representa uma implementação parcial da solução proposta.
 
-## Project setup
+O foco principal durante o desenvolvimento foi estabelecer a modelagem de domínio e a estrutura técnica inicial da aplicação.
 
-```bash
-$ bun install
-```
+### Implementado
 
-## Compile and run the project
+- **Money Value Object:** representação monetária utilizando `decimal.js`, evitando operações financeiras com a imprecisão de ponto flutuante do JavaScript.
+- **Wallet Aggregate:** encapsulamento do saldo da carteira e de suas operações financeiras.
+- **WagerTransaction:** representação de domínio das transações de apostas e seus respectivos estados.
+- **WalletLedgerEntry:** representação de domínio dos registros financeiros imutáveis e da consistência dos saldos.
+- **Mapeamento ORM inicial:** início da implementação das entidades TypeORM para carteiras, transações de apostas e registros financeiros.
+- **Ambiente de banco de dados:** PostgreSQL configurado por meio do Docker Compose.
+- **Configuração da aplicação:** configuração inicial da conexão entre NestJS e TypeORM.
 
-```bash
-# development
-$ bun run start
+### Não implementado
 
-# watch mode
-$ bun run start:dev
+As seguintes funcionalidades permanecem pendentes:
 
-# production mode
-$ bun run start:prod
-```
+- Migrations iniciais e validação do esquema do banco de dados.
+- Endpoints de criação e consulta de carteiras.
+- Casos de uso para processamento de transações de apostas.
+- Idempotência persistente e detecção de conflitos entre payloads.
+- Transações no banco de dados e controle de concorrência.
+- Atualização atômica dos saldos das carteiras e dos registros financeiros.
+- Integração com AWS SQS, incluindo consumidores de mensagens e filas de mensagens não processáveis (Dead Letter Queue).
+- Padrões Transactional Inbox e Outbox.
+- Mecanismos de retry e processamento de transações recebidas fora de ordem.
+- Integração de autenticação.
+- Testes de integração e concorrência.
+- Logs estruturados, métricas e verificações de saúde da aplicação.
 
-## Run tests
+## Tecnologias utilizadas
 
-```bash
-# unit tests
-$ bun run test
+- TypeScript
+- NestJS
+- PostgreSQL
+- TypeORM
+- Docker Compose
+- decimal.js
+- npm (gerenciador de pacotes)
 
-# e2e tests
-$ bun run test:e2e
+**Observação:** o desafio especificava o uso de Bun, mas foi utilizado npm durante o desenvolvimento.
 
-# test coverage
-$ bun run test:cov
-```
+## Familiaridade com as tecnologias e conceitos
 
-## Deployment
+Minha experiência prática com parte das tecnologias solicitadas — especialmente NestJS, PostgreSQL, Docker e TypeORM — ainda é limitada.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Também não possuo experiência consolidada com algumas das abordagens arquiteturais e estratégias envolvidas no desafio, como Domain-Driven Design (DDD), mensageria distribuída, observabilidade, testes de integração, controle de concorrência e idempotência.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Durante o desenvolvimento, parte do tempo disponível foi dedicada ao estudo desses conceitos e ferramentas, buscando compreender suas aplicações e estabelecer uma base inicial para a solução. Essa curva de aprendizado influenciou diretamente o escopo que foi possível implementar.
 
-```bash
-$ bun install -g @nestjs/mau
-$ mau deploy
-```
+## Visão geral do domínio
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+A modelagem inicial está organizada em torno de três conceitos principais:
 
-## Observability
+- **Wallet:** representa o saldo de um jogador em uma moeda específica.
+- **WagerTransaction:** representa uma operação financeira recebida de um provedor de jogos.
+- **WalletLedgerEntry:** representa o registro financeiro associado a uma alteração de saldo.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+Um Value Object compartilhado, denominado `Money`, é responsável pela representação e pelas operações monetárias.
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+## Ambiente de execução
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+O projeto possui um ambiente local inicial de PostgreSQL configurado por meio do Docker Compose.
 
-## Resources
+O container do banco de dados foi iniciado com sucesso, e a aplicação NestJS iniciou sem apresentar erros de conexão com o PostgreSQL.
 
-Check out a few resources that may come in handy when working with NestJS:
+Entretanto, as migrations ainda não foram concluídas e a aplicação ainda não disponibiliza a API de processamento de apostas.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Considerações finais
 
-## Support
+Esta submissão deve ser considerada uma implementação inicial das fundações de domínio e infraestrutura, e não um processador de transações de apostas funcional.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Reconheço que os componentes pendentes são fundamentais para atender aos requisitos de consistência financeira, concorrência e processamento distribuído do desafio.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Optei por documentar explicitamente o estado atual, as decisões tomadas e as limitações da implementação, distinguindo o que foi efetivamente desenvolvido daquilo que ainda precisaria ser implementado e validado.
