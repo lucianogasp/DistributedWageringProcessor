@@ -6,7 +6,10 @@ import {
   UpdateDateColumn,
   Unique,
   Check,
+  OneToMany
 } from "typeorm";
+import WagerTransactionOrmEntity from "../../../wagering/infrastructure/typeorm/WagerTransactionOrmEntity";
+import WalletLedgerEntryOrmEntity from "./WalletLedgerEntryOrmEntity";
 
 @Entity("wallets")
 @Unique("UQ_wallet_player_currency", ["playerId", "currency"])
@@ -33,6 +36,18 @@ class WalletOrmEntity {
 
   @UpdateDateColumn({ name: "updated_at", type: "timestamptz" })
   updatedAt: Date;
+
+  @OneToMany(
+    () => WagerTransactionOrmEntity,
+    (transaction) => transaction.wallet,
+  )
+  transactions: WagerTransactionOrmEntity[];
+
+  @OneToMany(
+    () => WalletLedgerEntryOrmEntity,
+    (entry) => entry.wallet,
+)
+ledgerEntries: WalletLedgerEntryOrmEntity[];
 }
 
 export default WalletOrmEntity;

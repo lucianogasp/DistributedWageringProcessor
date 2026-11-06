@@ -1,7 +1,7 @@
 import Money from "../../shared/domain/Money";
 import { LedgerDirection } from "../../wallet/domain/WalletLedgerEntry";
 
-enum WagerTransactionKind {
+export enum WagerTransactionKind {
   Opening = "OPENING",
   Bet = "BET",
   Win = "WIN",
@@ -10,7 +10,7 @@ enum WagerTransactionKind {
   Rollback = "ROLLBACK",
 }
 
-enum WagerTransactionStatus {
+export enum WagerTransactionStatus {
   Pending = "PENDING",
   PendingReference = "PENDING_REFERENCE",
   Processed = "PROCESSED",
@@ -269,7 +269,9 @@ class WagerTransaction {
       this._status === WagerTransactionStatus.Rejected || 
       this._status === WagerTransactionStatus.Failed
     ) {
-      throw new InvalidTransactionStateError();
+      
+      throw new Error('Error temporário');
+      // throw new InvalidTransactionStateError();
     }
   }
   // ==================================================================================================================================================================
